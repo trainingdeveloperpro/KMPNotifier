@@ -2,7 +2,6 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.kotlin.native.cocoapods")
-
 }
 
 kotlin {
@@ -10,7 +9,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
     }
@@ -35,36 +34,45 @@ kotlin {
 
     sourceSets {
 
-        androidMain.dependencies {
-            implementation(libs.androidx.startup.runtime)
-            implementation(libs.androidx.core.ktx)
-            implementation(libs.androidx.activity.ktx)
-            implementation(libs.firebase.messaging)
-
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.startup.runtime)
+                implementation(libs.androidx.core.ktx)
+                implementation(libs.androidx.activity.ktx)
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.messaging)
+            }
         }
-        commonMain.dependencies {
-            implementation(libs.koin.core)
-            implementation(libs.kotlinx.coroutine)
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.koin.core)
+                implementation(libs.kotlinx.coroutines.core)
+            }
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
         }
-
     }
 }
 
 android {
+    val androidMinSdk: String by project
+    val androidCompileSdk: String by project
+    val androidTargetSdk: String by project
+
     namespace = "com.mmk.kmpnotifier"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = androidCompileSdk.toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = androidMinSdk.toInt()
+        targetSdk = androidTargetSdk.toInt()
     }
 
     packaging {
@@ -73,8 +81,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
