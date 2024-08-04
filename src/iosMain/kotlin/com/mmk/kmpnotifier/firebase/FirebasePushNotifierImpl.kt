@@ -58,6 +58,5 @@ internal class FirebasePushNotifierImpl : PushNotifier {
                 notifierManager.onNewToken(didReceiveRegistrationToken)
             }
         }
-
     }
 }

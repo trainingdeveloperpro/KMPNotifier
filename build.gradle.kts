@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -28,6 +30,12 @@ kotlin {
         }
         noPodspec()
         pod("FirebaseMessaging")
+
+        xcodeConfigurationToNativeBuildType["DebugCold"] = NativeBuildType.DEBUG
+        xcodeConfigurationToNativeBuildType["DebugPro"] = NativeBuildType.DEBUG
+        // xcodeConfigurationToNativeBuildType["ReleaseUi"] = NativeBuildType.RELEASE
+        xcodeConfigurationToNativeBuildType["ReleasePro"] = NativeBuildType.RELEASE
+        xcodeConfigurationToNativeBuildType["ReleaseCold"] = NativeBuildType.RELEASE
     }
 
 
@@ -53,6 +61,18 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
+            }
+        }
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                api(libs.koin.core)
             }
         }
     }
