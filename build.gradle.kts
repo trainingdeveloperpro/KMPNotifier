@@ -29,7 +29,7 @@ kotlin {
             isStatic = true
         }
         noPodspec()
-        pod("FirebaseMessaging")
+        // pod("FirebaseMessaging")
 
         xcodeConfigurationToNativeBuildType["DebugCold"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["DebugPro"] = NativeBuildType.DEBUG

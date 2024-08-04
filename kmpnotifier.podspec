@@ -8,9 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = ''
     spec.vendored_frameworks      = 'build/cocoapods/framework/kmpnotifier.framework'
     spec.libraries                = 'c++'
-    spec.dependency 'FirebaseMessaging', '11.1.0'
-                
-                
+
                 
     if !Dir.exist?('build/cocoapods/framework/kmpnotifier.framework') || Dir.empty?('build/cocoapods/framework/kmpnotifier.framework')
         raise "
