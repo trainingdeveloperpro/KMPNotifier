@@ -22,7 +22,7 @@ internal actual val platformModule = module {
     } bind Notifier::class
 
     factory {
-        FirebasePushNotifierImpl()
+        FirebasePushNotifierImpl
     } bind PushNotifier::class
 
 

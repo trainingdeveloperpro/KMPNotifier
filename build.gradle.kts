@@ -23,13 +23,16 @@ kotlin {
 
 
     cocoapods {
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "15"
         framework {
             baseName = "KMPNotifier"
             isStatic = true
         }
         noPodspec()
-        // pod("FirebaseMessaging")
+        // pod("FirebaseMessaging") 
+        // {
+            // extraOpts -= listOf("-framework", "\"FirebaseMessaging\"") //Extra opts is important
+        // }
 
         xcodeConfigurationToNativeBuildType["DebugCold"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["DebugPro"] = NativeBuildType.DEBUG

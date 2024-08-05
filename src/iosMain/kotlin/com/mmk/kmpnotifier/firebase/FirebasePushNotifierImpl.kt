@@ -15,38 +15,55 @@ import kotlin.coroutines.suspendCoroutine
 
 
 @OptIn(ExperimentalForeignApi::class)
-internal class FirebasePushNotifierImpl : PushNotifier {
+public object FirebasePushNotifierImpl : PushNotifier {
 
-    init {
-        MainScope().launch {
-            println("FirebasePushNotifier is initialized")
-            // UIApplication.sharedApplication.registerForRemoteNotifications()
-            // FIRMessaging.messaging().delegate = FirebaseMessageDelegate()
-        }
+    public var swiftDelegate: PushNotifier? = null
 
-    }
+    // init {
+    //     MainScope().launch {
+    //         println("FirebasePushNotifier is initialized")
+    //         UIApplication.sharedApplication.registerForRemoteNotifications()
+    //         // FIRMessaging.messaging().delegate = FirebaseMessageDelegate()
+    //     }
 
+    // }
 
-    override suspend fun getToken(): String? = suspendCoroutine { cont ->
-        // FIRMessaging.messaging().tokenWithCompletion { token, error ->
-        //     cont.resume(token)
-        //     error?.let { println("Error while getting token: $error") }
-        // }
-    }
+    override suspend fun getToken(): String? = swiftDelegate?.getToken()
 
-    override suspend fun deleteMyToken() = suspendCoroutine { cont ->
-        // FIRMessaging.messaging().deleteTokenWithCompletion {
-             cont.resume(Unit)
-        // }
+    override suspend fun deleteMyToken() {
+        swiftDelegate?.deleteMyToken()
     }
 
     override suspend fun subscribeToTopic(topic: String) {
-        // FIRMessaging.messaging().subscribeToTopic(topic)
+        swiftDelegate?.subscribeToTopic(topic)
     }
 
     override suspend fun unSubscribeFromTopic(topic: String) {
-        // FIRMessaging.messaging().unsubscribeFromTopic(topic)
+        swiftDelegate?.unSubscribeFromTopic(topic)
     }
+
+
+    // override suspend fun getToken(): String? = suspendCoroutine { cont ->
+
+    //     // FIRMessaging.messaging().tokenWithCompletion { token, error ->
+    //     //     cont.resume(token)
+    //     //     error?.let { println("Error while getting token: $error") }
+    //     // }
+    // }
+
+    // override suspend fun deleteMyToken() = suspendCoroutine { cont ->
+    //     // FIRMessaging.messaging().deleteTokenWithCompletion {
+    //          cont.resume(Unit)
+    //     // }
+    // }
+
+    // override suspend fun subscribeToTopic(topic: String) {
+    //     // FIRMessaging.messaging().subscribeToTopic(topic)
+    // }
+
+    // override suspend fun unSubscribeFromTopic(topic: String) {
+    //     // FIRMessaging.messaging().unsubscribeFromTopic(topic)
+    // }
 
 
     // private class FirebaseMessageDelegate : FIRMessagingDelegateProtocol, NSObject() {

@@ -6,51 +6,52 @@ import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfig
 import com.mmk.kmpnotifier.permission.PermissionUtil
 import org.koin.core.component.get
 
-internal object NotifierManagerImpl : KMPKoinComponent() {
+public object NotifierManagerImpl : KMPKoinComponent() {
     private val listeners = mutableListOf<NotifierManager.Listener>()
 
-    fun initialize(configuration: NotificationPlatformConfiguration) {
+    public fun initialize(configuration: NotificationPlatformConfiguration) {
         LibDependencyInitializer.initialize(configuration)
     }
 
-    fun getConfiguration(): NotificationPlatformConfiguration = get()
+    public fun getConfiguration(): NotificationPlatformConfiguration = get()
 
-    fun getLocalNotifier(): Notifier {
+    public fun getLocalNotifier(): Notifier {
         requireInitialization()
         return get()
     }
 
-    fun getPushNotifier(): PushNotifier {
+    public fun getPushNotifier(): PushNotifier {
         requireInitialization()
         return get()
     }
 
-    fun getPermissionUtil(): PermissionUtil {
+    public fun getPermissionUtil(): PermissionUtil {
         requireInitialization()
         return get()
     }
 
-    fun addListener(listener: NotifierManager.Listener) {
+    public fun addListener(listener: NotifierManager.Listener) {
+        println("NotifierManagerImpl added listener")
         listeners.add(listener)
     }
 
-    fun onNewToken(token: String) {
+    public fun onNewToken(token: String) {
         listeners.forEach { it.onNewToken(token) }
     }
 
-    fun onPushPayloadData(data: PayloadData) {
+    public fun onPushPayloadData(data: PayloadData) {
         println("Received Push Notification payload data")
         if (listeners.size == 0) println("There is no listener to notify onPushPayloadData")
         listeners.forEach { it.onPayloadData(data) }
     }
 
-    fun onPushNotification(title: String?, body: String?) {
+    public fun onPushNotification(title: String?, body: String?) {
         println("Received Push Notification notification type message")
         if (listeners.size == 0) println("There is no listener to notify onPushNotification")
         listeners.forEach { it.onPushNotification(title = title, body = body) }
     }
 
-    fun onNotificationClicked(data: PayloadData) {
+    public fun onNotificationClicked(data: PayloadData) {
         println("Notification is clicked")
         if (listeners.size == 0) println("There is no listener to notify onPushPayloadData")
         listeners.forEach { it.onNotificationClicked(data) }
