@@ -84,15 +84,14 @@ android {
     val androidTargetSdk: String by project
 
     namespace = "com.mmk.kmpnotifier"
-    compileSdk = androidCompileSdk.toInt()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        minSdk = androidMinSdk.toInt()
-        targetSdk = androidTargetSdk.toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
     packaging {
